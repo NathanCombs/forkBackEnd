@@ -1,7 +1,11 @@
 {
-  "main.css": "static/css/main.267e7b5a.css",
-  "main.css.map": "static/css/main.267e7b5a.css.map",
-  "main.js": "static/js/main.94f02c74.js",
-  "main.js.map": "static/js/main.94f02c74.js.map",
-  "static/media/Fork.jpg": "static/media/Fork.32e6cc24.jpg"
+  "main.css": "static/css/main.cd1f6ea3.css",
+  "main.css.map": "static/css/main.cd1f6ea3.css.map",
+  "main.js": "static/js/main.0e6f4bef.js",
+  "main.js.map": "static/js/main.0e6f4bef.js.map",
+  "static/media/Pie.jpg": "static/media/Pie.c2791641.jpg",
+  "static/media/forkcircle.png": "static/media/forkcircle.cbd23a80.png",
+  "static/media/forkgold.png": "static/media/forkgold.4efa1593.png",
+  "static/media/fried.jpg": "static/media/fried.2a88962f.jpg",
+  "static/media/wheat.jpeg": "static/media/wheat.43b746c0.jpeg"
 }

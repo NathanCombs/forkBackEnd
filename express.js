@@ -118,7 +118,7 @@ app.post('/submitRecipe', (req, res) => {
     if (req.body.title.length && req.body.ingredients.length && req.body.process.length) {
         var ciRecipeTitle = new RegExp(req.body.title, "gi");
         db.collection('recipes').find({ title: ciRecipeTitle }).toArray((err, title) => {
-            if(!title.length) {
+            if (!title.length) {
                 db.collection('recipes').save({ title: req.body.title, author: req.body.author, ingredients: req.body.ingredients, process: req.body.process }, (err, result) => {
                     if (err) {
                         res.json({
@@ -158,31 +158,32 @@ app.post('/getUser', (req, res) => {
 
 app.post('/forkRecipe', (req, res) => {
     let forkAuthor = jwt.verify(req.body.token, 'Secret');
-    db.collection('recipes').find({ 
+    db.collection('recipes').find({
         $or: [
-            {title: `${forkAuthor}' Fork of ${req.body.title}`}, 
-            {title: `${forkAuthor}'s Fork of ${req.body.title}`}
-        ] 
+            { title: `${forkAuthor}' Fork of ${req.body.title}` },
+            { title: `${forkAuthor}'s Fork of ${req.body.title}` }
+        ]
     }).toArray((err, title) => {
         if (!title.length) {
-            if (forkAuthor[forkAuthor.length-1] == "s") {
-                db.collection('recipes').save({ 
-                    title: `${forkAuthor}' Fork of ${req.body.title}`, author: forkAuthor, forkOf: req.body.title, ingredients: req.body.ingredients, process: req.body.process 
+            if (forkAuthor[forkAuthor.length - 1] == "s") {
+                db.collection('recipes').save({
+                    title: `${forkAuthor}' Fork of ${req.body.title}`, author: forkAuthor, forkOf: req.body.title, ingredients: req.body.ingredients, process: req.body.process
                 }, (err, result) => {
-                    res.json({ 
-                        message: `Successfully forked ${req.body.title}`});
+                    res.json({
+                        message: `Successfully forked ${req.body.title}`
+                    });
                 });
             } else {
-                db.collection('recipes').save({ 
-                    title: `${forkAuthor}'s Fork of ${req.body.title}`, author: forkAuthor, forkOf: req.body.title, ingredients: req.body.ingredients, process: req.body.process 
+                db.collection('recipes').save({
+                    title: `${forkAuthor}'s Fork of ${req.body.title}`, author: forkAuthor, forkOf: req.body.title, ingredients: req.body.ingredients, process: req.body.process
                 }, (err, result) => {
-                    res.json({ 
+                    res.json({
                         message: `Successully forked ${req.body.title}`,
                     });
                 });
             };
         } else {
-            res.json({ 
+            res.json({
                 message: 'Looks like you already have an unchanged fork of this recipe',
             });
         }
@@ -193,7 +194,7 @@ app.post("/searchRecipe", function (req, res) {
     let regex = new RegExp(`${req.body.ingredients}`)
     if (req.body.ingredients) {
         db.collection('recipes').find({
-            "ingredients": {$regex: regex}
+            "ingredients": { $regex: regex }
         }).toArray((err, recipes) => {
             if (err) console.log(err)
             if (!recipes.length) {
@@ -231,9 +232,25 @@ app.post('/myForks', (req, res) => {
     })
 })
 
-
-app.post('/findByIdTest', (req, res) => {
-    db.collection('recipes').find({"_id": ObjectId('5abbb16be437b710d34101ba')}).toArray((err, test) => {
-        res.json(test);
+app.post('/saveFork', (req, res) => {
+    var ObjectId = require('mongodb').ObjectID;
+    db.collection('recipes').update({ _id: ObjectId(req.body._id) }, { $set:{ title: req.body.title, ingredients: req.body.ingredients, process: req.body.process }})
+    res.json({
+        message: "Recipe edited"
+    })
+    db.collection('recipes').find(ObjectId(req.body._id)).toArray((err, fork) => {
+        console.log(fork);
     })
 })
+
+
+
+
+// var get_by_id = function(id, callback) {
+//  console.log("find by: "+ id);
+//  get_collection(function(collection) {
+//    collection.findOne({"_id": new ObjectId(id)}, function(err, doc) {
+//       callback(doc);
+//    });
+//  });
+// }
