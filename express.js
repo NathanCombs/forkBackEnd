@@ -230,3 +230,10 @@ app.post('/myForks', (req, res) => {
         } else res.json("Better start forking!")
     })
 })
+
+
+app.post('/findByIdTest', (req, res) => {
+    db.collection('recipes').find({"_id": ObjectId('5abbb16be437b710d34101ba')}).toArray((err, test) => {
+        res.json(test);
+    })
+})
